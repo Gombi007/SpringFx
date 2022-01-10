@@ -1,0 +1,41 @@
+#btnCreate {
+    -fx-text-fill: white;
+    -fx-background-color: green,
+    linear-gradient(#369c4b 0%, #189932 20%, #016315 100%),
+    linear-gradient(#189932, #016315),
+    radial-gradient(center 50% 0%, radius 100%, rgba(114, 131, 148, 0.9), rgba(255, 255, 255, 0));
+    -fx-padding: 10 20 10 20;
+
+}
+
+#btnDelete {
+    -fx-text-fill: white;
+    -fx-background-color: #bf0000,
+    linear-gradient(#b02c2c 0%, #9e0606 20%, #660202 100%),
+    linear-gradient(#9e0606, #660202),
+    radial-gradient(center 50% 0%, radius 100%, rgba(114, 131, 148, 0.9), rgba(255, 255, 255, 0));
+    -fx-padding: 10 20 10 20;
+}
+
+#btnUpdate {
+    -fx-text-fill: white;
+    -fx-background-color: blue,
+    linear-gradient(#3953a8 0%, #163391 20%, #041b66 100%),
+    linear-gradient(#163391, #041b66),
+    radial-gradient(center 50% 0%, radius 100%, rgba(114, 131, 148, 0.9), rgba(255, 255, 255, 0));
+    -fx-padding: 10 20 10 20;
+}
+
+#main {
+    -fx-background-color: #5c83d1;
+}
+
+.text-field {
+    -fx-background-color: #1e4a73;
+    -fx-text-fill: white;
+}
+
+.text-field:focused {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
