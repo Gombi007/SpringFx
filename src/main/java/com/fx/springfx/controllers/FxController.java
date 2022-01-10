@@ -1,26 +1,33 @@
 package com.fx.springfx.controllers;
 
 import com.fx.springfx.entities.Book;
-import com.fx.springfx.services.WeatherService;
+import com.fx.springfx.services.BookService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 @Component
 @FxmlView("/Main.fxml")
-public class FxController {
+public class FxController implements Initializable {
 
-    private WeatherService weatherService;
+    private BookService bookService;
 
     @Autowired
-    public FxController(WeatherService weatherService) {
-        this.weatherService = weatherService;
+    public FxController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @FXML
@@ -57,7 +64,7 @@ public class FxController {
     private TableColumn<Book, String> tvAuthor;
 
     @FXML
-    private TableColumn<Book, Integer> tvId;
+    private TableColumn<Book, Long> tvId;
 
     @FXML
     private TableColumn<Book, Integer> tvPages;
@@ -69,5 +76,20 @@ public class FxController {
     private TableColumn<Book, Integer> tvYear;
 
 
+    public void showBooks() {
+        ObservableList<Book> list = FXCollections.observableArrayList(bookService.allBook());
+        tvId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tvTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tvAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
+        tvYear.setCellValueFactory(new PropertyValueFactory<>("year"));
+        tvPages.setCellValueFactory(new PropertyValueFactory<>("pages"));
+        tvBooks.setItems(list);
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        showBooks();
+    }
 }
 
