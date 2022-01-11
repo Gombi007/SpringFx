@@ -76,20 +76,10 @@ public class FxController implements Initializable {
     private TableColumn<Book, Integer> tvYear;
 
 
-    public void showBooks() {
-        ObservableList<Book> list = FXCollections.observableArrayList(bookService.allBook());
-        tvId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tvTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        tvAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
-        tvYear.setCellValueFactory(new PropertyValueFactory<>("year"));
-        tvPages.setCellValueFactory(new PropertyValueFactory<>("pages"));
-        tvBooks.setItems(list);
-    }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        showBooks();
+      bookService.showAllBook(tvId,tvAuthor,tvTitle,tvYear,tvPages,tvBooks);
     }
 }
 
