@@ -110,7 +110,7 @@ public class FxController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+        bookService.showAllBook(tvId, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
     }
 
     private void setFieldErrorLabels(Exception exception) {
