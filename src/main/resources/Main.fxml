@@ -1,74 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="383.0" prefWidth="883.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.fx.springfx.controllers.FxController">
+
+<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fx.springfx.controllers.FxController">
     <children>
-        <VBox layoutX="21.0" layoutY="37.0" prefHeight="180.0" prefWidth="64.0" spacing="9.0">
+        <VBox layoutX="211.0" layoutY="37.0" prefHeight="198.0" prefWidth="74.0" spacing="15.0">
             <children>
                 <Label text="ID">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <Label layoutX="10.0" layoutY="10.0" text="Title">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <Label layoutX="10.0" layoutY="48.0" text="Author">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <Label layoutX="10.0" layoutY="86.0" text="Year">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <Label layoutX="10.0" layoutY="124.0" text="Pages">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
             </children>
         </VBox>
-        <VBox layoutX="84.0" layoutY="40.0" prefHeight="174.0" prefWidth="202.0" spacing="11.0">
+        <VBox layoutX="267.0" layoutY="40.0" prefHeight="198.0" prefWidth="478.0" spacing="12.0">
             <children>
-                <TextField fx:id="tfId"/>
-                <TextField fx:id="tfTitle" layoutX="10.0" layoutY="10.0"/>
-                <TextField fx:id="tfAuthor" layoutX="10.0" layoutY="35.0"/>
-                <TextField fx:id="tfYear" layoutX="10.0" layoutY="60.0"/>
-                <TextField fx:id="tfPages" layoutX="10.0" layoutY="85.0" prefHeight="25.0" prefWidth="202.0"/>
+                <TextField fx:id="tfId" prefHeight="30.0" prefWidth="455.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="tfTitle" layoutX="10.0" layoutY="10.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="tfAuthor" layoutX="10.0" layoutY="35.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="tfYear" layoutX="10.0" layoutY="60.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="tfPages" layoutX="10.0" layoutY="85.0" prefHeight="25.0" prefWidth="202.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
             </children>
         </VBox>
-        <TableView fx:id="tvBooks" layoutX="344.0" layoutY="39.0" prefHeight="288.0" prefWidth="502.0">
+        <TableView fx:id="tvBooks" layoutX="24.0" layoutY="333.0" prefHeight="421.0" prefWidth="985.0">
             <columns>
-                <TableColumn fx:id="tvId" minWidth="20.0" prefWidth="100.0" text="ID"/>
-                <TableColumn fx:id="tvTitle" prefWidth="100.0" text="Title"/>
-                <TableColumn fx:id="tvAuthor" prefWidth="100.0" text="Author"/>
-                <TableColumn fx:id="tvYear" prefWidth="100.0" text="Year"/>
-                <TableColumn fx:id="tvPages" prefWidth="100.0" text="Pages"/>
+                <TableColumn fx:id="tvId" minWidth="20.0" prefWidth="93.0" text="ID" />
+                <TableColumn fx:id="tvTitle" prefWidth="325.0" text="Title" />
+                <TableColumn fx:id="tvAuthor" prefWidth="327.0" text="Author" />
+                <TableColumn fx:id="tvYear" prefWidth="136.0" text="Year" />
+                <TableColumn fx:id="tvPages" prefWidth="103.0" text="Pages" />
             </columns>
         </TableView>
-        <Button fx:id="btnCreate" layoutX="27.0" layoutY="259.0" mnemonicParsing="false" text="Create">
+        <Button fx:id="btnCreate" layoutX="248.0" layoutY="259.0" mnemonicParsing="false" text="Create">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="btnUpdate" layoutX="133.0" layoutY="259.0" mnemonicParsing="false" text="Update">
+        <Button fx:id="btnUpdate" layoutX="452.0" layoutY="259.0" mnemonicParsing="false" text="Update">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="btnDelete" layoutX="242.0" layoutY="259.0" mnemonicParsing="false" text="Delete">
+        <Button fx:id="btnDelete" layoutX="687.0" layoutY="259.0" mnemonicParsing="false" text="Delete">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Button>
+      <Label fx:id="lbTitle" layoutX="462.0" text="Bookstore">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
     </children>
 </AnchorPane>
