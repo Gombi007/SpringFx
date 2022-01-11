@@ -11,6 +11,17 @@ CREATE TABLE books
 
 INSERT INTO books(title, author, year, pages)
 VALUES ('Test book 1', 'John Doe', 200, 345),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
+       ('Test book 2', 'Mr Smith', 1999, 200),
        ('Test book 2', 'Mr Smith', 1999, 200)
 ;
 
