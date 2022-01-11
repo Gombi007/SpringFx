@@ -44,6 +44,10 @@
     -fx-font-size: 25px;
 }
 
+#textLabels * {
+    -fx-font-weight: bold;
+}
+
 #tvBooks {
     -fx-padding: 0;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 0);
@@ -92,5 +96,9 @@
 
 #errLabels * {
     -fx-text-fill: darkred;
+}
+
+#lbErrorMessage {
+    -fx-background-color: darkred;
 }
 

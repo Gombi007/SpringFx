@@ -13,10 +13,12 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.zip.DataFormatException;
 
 @Component
 @FxmlView("/Main.fxml")
 public class FxController implements Initializable {
+
 
     private BookService bookService;
 
@@ -89,14 +91,19 @@ public class FxController implements Initializable {
     private Label lbErrorPages;
 
     @FXML
+    private Label lbErrorMessage;
+
+    @FXML
     private void buttonAction(ActionEvent event) {
         removeAllErrorLabel();
         if (event.getSource() == btnCreate) {
             try {
                 bookService.create(tfId.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
                 bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
-            } catch (Exception exception) {
+            } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
+            } catch (Exception exception) {
+                lbErrorMessage.setText(exception.getMessage());
             }
         }
     }
@@ -130,6 +137,7 @@ public class FxController implements Initializable {
         lbErrorTitle.setText("");
         lbErrorPages.setText("");
         lbErrorYear.setText("");
+        lbErrorMessage.setText("");
     }
 
 

@@ -10,6 +10,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.zip.DataFormatException;
+
 @Service
 public class BookService {
     private BookRepository bookRepository;
@@ -43,7 +45,8 @@ public class BookService {
             Book book = new Book(longId, title, author, integerYear, integerPages);
             bookRepository.save(book);
         } catch (Exception exception) {
-            System.out.println("Something went wrong during the save method");
+            System.out.println("Something went wrong during the create method");
+            throw new Exception("Something went wrong during the create method");
         }
 
     }
@@ -66,7 +69,7 @@ public class BookService {
             exceptionMessage += " pages ";
         }
         if (!exceptionMessage.isEmpty()) {
-            throw new Exception(exceptionMessage);
+            throw new DataFormatException(exceptionMessage);
         }
     }
 }
