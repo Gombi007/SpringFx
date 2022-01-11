@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fx.springfx.controllers.FxController">
+<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fx.springfx.controllers.FxController">
     <children>
         <VBox layoutX="181.0" layoutY="36.0" prefHeight="202.0" prefWidth="73.0" spacing="15.0">
             <children>
@@ -49,25 +44,11 @@
                 <TableColumn fx:id="tvPages" minWidth="0.0" prefWidth="110.0" text="Pages" />
             </columns>
         </TableView>
-        <Button fx:id="btnCreate" layoutX="248.0" layoutY="259.0" mnemonicParsing="false" text="Create">
+        <Label fx:id="lbTitle" layoutX="462.0" text="Bookstore">
             <font>
-                <Font size="14.0" />
+                <Font size="24.0" />
             </font>
-        </Button>
-        <Button fx:id="btnUpdate" layoutX="452.0" layoutY="259.0" mnemonicParsing="false" text="Update">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Button>
-        <Button fx:id="btnDelete" layoutX="687.0" layoutY="259.0" mnemonicParsing="false" text="Delete">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Button>
-      <Label fx:id="lbTitle" layoutX="462.0" text="Bookstore">
-         <font>
-            <Font size="24.0" />
-         </font></Label>
+        </Label>
         <VBox layoutX="251.0" layoutY="36.0" prefHeight="405.0" prefWidth="534.0" spacing="12.0">
             <children>
                 <TextField fx:id="tfId" prefHeight="30.0" prefWidth="455.0">
@@ -97,5 +78,20 @@
                 </TextField>
             </children>
         </VBox>
+        <Button fx:id="btnCreate" layoutX="248.0" layoutY="259.0" mnemonicParsing="false" onAction="#buttonAction" text="Create">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="btnUpdate" layoutX="452.0" layoutY="259.0" mnemonicParsing="false" text="Update">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="btnDelete" layoutX="687.0" layoutY="259.0" mnemonicParsing="false" text="Delete">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
     </children>
 </AnchorPane>

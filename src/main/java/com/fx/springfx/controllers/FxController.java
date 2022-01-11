@@ -2,15 +2,10 @@ package com.fx.springfx.controllers;
 
 import com.fx.springfx.entities.Book;
 import com.fx.springfx.services.BookService;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +70,23 @@ public class FxController implements Initializable {
     @FXML
     private TableColumn<Book, Integer> tvYear;
 
+    @FXML
+    private Label lbTitle;
+
+    @FXML
+    private void buttonAction(ActionEvent event) {
+        if (event.getSource() == btnCreate) {
+            bookService.create(tfId.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
+            bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+        }
+    }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-      bookService.showAllBook(tvId,tvAuthor,tvTitle,tvYear,tvPages,tvBooks);
+        bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
     }
+
+
 }
 

@@ -32,6 +32,14 @@ public class BookService {
         year.setCellValueFactory(new PropertyValueFactory<>("year"));
         pages.setCellValueFactory(new PropertyValueFactory<>("pages"));
         tvBooks.setItems(list);
+    }
+
+    public void create(String id, String author, String title, String year, String pages) {
+        Long longId = Long.parseLong(id);
+        int integerYear = Integer.parseInt(year);
+        int integerPages = Integer.parseInt(pages);
+        Book book = new Book(longId, author, title, integerYear, integerPages);
+        bookRepository.save(book);
 
     }
 }
