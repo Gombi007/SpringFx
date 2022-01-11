@@ -90,3 +90,7 @@
     -fx-shape: null;
 }
 
+#errLabels * {
+    -fx-text-fill: darkred;
+}
+

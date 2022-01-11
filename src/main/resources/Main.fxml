@@ -44,11 +44,6 @@
                 <TableColumn fx:id="tvPages" minWidth="0.0" prefWidth="110.0" text="Pages" />
             </columns>
         </TableView>
-        <Label fx:id="lbTitle" layoutX="462.0" text="Bookstore">
-            <font>
-                <Font size="24.0" />
-            </font>
-        </Label>
         <VBox layoutX="251.0" layoutY="36.0" prefHeight="405.0" prefWidth="534.0" spacing="12.0">
             <children>
                 <TextField fx:id="tfId" prefHeight="30.0" prefWidth="455.0">
@@ -93,5 +88,39 @@
                 <Font size="14.0" />
             </font>
         </Button>
+        <Label fx:id="lbTitle" layoutX="462.0" text="Bookstore">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+      <VBox fx:id="errLabels" layoutX="791.0" layoutY="37.0" prefHeight="193.0" prefWidth="229.0" spacing="21.0">
+         <children>
+            <Label fx:id="lbErrorId">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbErrorTitle" layoutX="10.0" layoutY="10.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbErrorAuthor" layoutX="10.0" layoutY="31.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbErrorYear" layoutX="10.0" layoutY="52.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbErrorPages" layoutX="10.0" layoutY="73.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>

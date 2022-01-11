@@ -74,17 +74,62 @@ public class FxController implements Initializable {
     private Label lbTitle;
 
     @FXML
+    private Label lbErrorId;
+
+    @FXML
+    private Label lbErrorTitle;
+
+    @FXML
+    private Label lbErrorAuthor;
+
+    @FXML
+    private Label lbErrorYear;
+
+    @FXML
+    private Label lbErrorPages;
+
+    @FXML
     private void buttonAction(ActionEvent event) {
+        removeAllErrorLabel();
         if (event.getSource() == btnCreate) {
-            bookService.create(tfId.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
-            bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+            try {
+                bookService.create(tfId.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
+                bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+            } catch (Exception exception) {
+                setFieldErrorLabels(exception);
+            }
         }
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+    }
+
+    private void setFieldErrorLabels(Exception exception) {
+        if (exception.getMessage().contains("id")) {
+            lbErrorId.setText("Missing id");
+        }
+        if (exception.getMessage().contains("title")) {
+            lbErrorTitle.setText("Missing title");
+        }
+        if (exception.getMessage().contains("author")) {
+            lbErrorAuthor.setText("Missing author");
+        }
+        if (exception.getMessage().contains("year")) {
+            lbErrorYear.setText("Missing year");
+        }
+        if (exception.getMessage().contains("pages")) {
+            lbErrorPages.setText("Missing pages");
+        }
+    }
+
+    private void removeAllErrorLabel() {
+        lbErrorId.setText("");
+        lbErrorAuthor.setText("");
+        lbErrorTitle.setText("");
+        lbErrorPages.setText("");
+        lbErrorYear.setText("");
     }
 
 
