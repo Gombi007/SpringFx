@@ -1,6 +1,7 @@
 package com.fx.springfx.controllers;
 
 import com.fx.springfx.entities.Book;
+import com.fx.springfx.exceptions.ResourceAlreadyExistException;
 import com.fx.springfx.services.BookService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,6 +95,9 @@ public class FxController implements Initializable {
     private Label lbErrorMessage;
 
     @FXML
+    private DialogPane errorMessageBox;
+
+    @FXML
     private void buttonAction(ActionEvent event) {
         removeAllErrorLabel();
         if (event.getSource() == btnCreate) {
@@ -102,6 +106,8 @@ public class FxController implements Initializable {
                 bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
+            } catch (ResourceAlreadyExistException exception) {
+                alertBox(exception.getMessage());
             } catch (Exception exception) {
                 lbErrorMessage.setText(exception.getMessage());
             }
@@ -140,6 +146,12 @@ public class FxController implements Initializable {
         lbErrorMessage.setText("");
     }
 
-
+    private void alertBox(String text) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
 }
 

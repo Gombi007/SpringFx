@@ -1,6 +1,7 @@
 package com.fx.springfx.services;
 
 import com.fx.springfx.entities.Book;
+import com.fx.springfx.exceptions.ResourceAlreadyExistException;
 import com.fx.springfx.repositories.BookRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,17 +39,12 @@ public class BookService {
 
     public void create(String id, String title, String author, String year, String pages) throws Exception {
         checkFieldValid(id, title, author, year, pages);
-        try {
-            Long longId = Long.parseLong(id);
-            int integerYear = Integer.parseInt(year);
-            int integerPages = Integer.parseInt(pages);
-            Book book = new Book(longId, title, author, integerYear, integerPages);
-            bookRepository.save(book);
-        } catch (Exception exception) {
-            System.out.println("Something went wrong during the create method");
-            throw new Exception("Something went wrong during the create method");
-        }
-
+        long longId = Long.parseLong(id);
+        isExistId(longId);
+        int integerYear = Integer.parseInt(year);
+        int integerPages = Integer.parseInt(pages);
+        Book book = new Book(longId, title, author, integerYear, integerPages);
+        bookRepository.save(book);
     }
 
     private void checkFieldValid(String id, String title, String author, String year, String pages) throws Exception {
@@ -70,6 +66,14 @@ public class BookService {
         }
         if (!exceptionMessage.isEmpty()) {
             throw new DataFormatException(exceptionMessage);
+        }
+
+    }
+
+    private void isExistId(long id) {
+        boolean isNewId = bookRepository.isExistId(id);
+        if (isNewId) {
+            throw new ResourceAlreadyExistException("ID already exist!\nIf you want to update this record, please click the UPDATE button.");
         }
     }
 }
