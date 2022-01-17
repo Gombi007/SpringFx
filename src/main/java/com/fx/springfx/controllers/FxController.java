@@ -4,9 +4,11 @@ import com.fx.springfx.entities.Book;
 import com.fx.springfx.exceptions.ResourceAlreadyExistException;
 import com.fx.springfx.services.BookService;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,11 +133,13 @@ public class FxController implements Initializable {
                 lbErrorMessage.setText(exception.getMessage());
             }
         }
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
+        handleSelectedTableRow();
     }
 
     private void setFieldErrorLabels(Exception exception) {
@@ -175,6 +179,23 @@ public class FxController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(text);
         alert.showAndWait();
+    }
+
+    public void handleSelectedTableRow() {
+        tvBooks.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Book selectedBook = tvBooks.getSelectionModel().getSelectedItem();
+                Integer year = selectedBook.getYear();
+                Integer pages = selectedBook.getPages();
+                tfId.setText(selectedBook.getId().toString());
+                tfIsbn.setText(selectedBook.getIsbn10().toString());
+                tfTitle.setText(selectedBook.getTitle());
+                tfAuthor.setText(selectedBook.getAuthor());
+                tfYear.setText(year.toString());
+                tfPages.setText(pages.toString());
+            }
+        });
     }
 }
 
