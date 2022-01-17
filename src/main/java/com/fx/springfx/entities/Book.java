@@ -20,6 +20,15 @@ public class Book {
     public Book() {
     }
 
+    public Book(Long id, Long isbn10, String title, String author, int year, int pages) {
+        this.id = id;
+        this.isbn10 = isbn10;
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.pages = pages;
+    }
+
     public Book(Long isbn10, String title, String author, int year, int pages) {
         this.isbn10 = isbn10;
         this.title = title;

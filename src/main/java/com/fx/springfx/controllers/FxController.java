@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.zip.DataFormatException;
 
@@ -123,7 +124,8 @@ public class FxController implements Initializable {
 
         if (event.getSource() == btnUpdate) {
             try {
-                bookService.update(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
+                boolean userHasAcceptedTheChanges = alertBox("Do you accept this changes?");
+                bookService.update(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText(), userHasAcceptedTheChanges);
                 bookService.showAllBook(tvId, tvIsbn, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
@@ -173,12 +175,22 @@ public class FxController implements Initializable {
         lbErrorMessage.setText("");
     }
 
-    private void alertBox(String text) {
+    private boolean alertBox(String text) {
+        ButtonType cancel = new ButtonType("Cancel");
+        ButtonType ok = new ButtonType("OK");
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.getButtonTypes().setAll(cancel, ok);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
         alert.setContentText(text);
-        alert.showAndWait();
+
+        Optional<ButtonType> selectedButton = alert.showAndWait();
+        if (selectedButton.get() == ok) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void handleSelectedTableRow() {

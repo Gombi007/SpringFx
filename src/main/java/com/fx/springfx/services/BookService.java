@@ -48,13 +48,20 @@ public class BookService {
         bookRepository.save(book);
     }
 
-    public void update(String id, String isbn10, String title, String author, String year, String pages) throws Exception {
+    public void update(String id, String isbn10, String title, String author, String year, String pages, boolean userHasAcceptedTheChanges) throws Exception {
         Book book = checkFieldData(isbn10, title, author, year, pages);
-        boolean isIdExist = bookRepository.isIsbnExist(book.getIsbn10());
-        if (!isIdExist) {
+        boolean isIsbnExist = bookRepository.isIsbnExist(book.getIsbn10());
+        if (!isIsbnExist) {
             throw new ResourceAlreadyExistException("ISBN-10 is not exist yet!\nIf you want to create a new record, please click the CREATE button.");
         }
-        bookRepository.save(book);
+        try {
+            Long longId = Long.parseLong(id);
+            book.setId(longId);
+        } catch (NumberFormatException exception) {
+            throw new NumberFormatException("Id contains numbers only");
+        }
+        if (userHasAcceptedTheChanges)
+            bookRepository.save(book);
     }
 
 
