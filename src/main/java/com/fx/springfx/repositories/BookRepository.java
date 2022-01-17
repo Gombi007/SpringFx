@@ -11,6 +11,6 @@ import java.util.ArrayList;
 public interface BookRepository extends CrudRepository<Book, Long> {
     ArrayList<Book> findAll();
 
-    @Query(value = "SELECT EXISTS(SELECT * FROM books WHERE id = :id)", nativeQuery = true)
-    boolean isExistId(Long id);
+    @Query(value = "SELECT EXISTS(SELECT * FROM books WHERE isbn10 = :isbn)", nativeQuery = true)
+    boolean isIsbnExist(Long isbn);
 }

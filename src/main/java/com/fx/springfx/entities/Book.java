@@ -10,6 +10,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    private Long isbn10;
     private String title;
     private String author;
     private int year;
@@ -19,14 +20,21 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String title, String author, int year, int pages) {
-        this.id = id;
+    public Book(Long isbn10, String title, String author, int year, int pages) {
+        this.isbn10 = isbn10;
         this.title = title;
         this.author = author;
         this.year = year;
         this.pages = pages;
     }
 
+    public Long getIsbn10() {
+        return isbn10;
+    }
+
+    public void setIsbn10(Long isbn10) {
+        this.isbn10 = isbn10;
+    }
 
     public Long getId() {
         return id;

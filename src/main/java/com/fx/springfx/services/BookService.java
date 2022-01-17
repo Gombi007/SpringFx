@@ -23,6 +23,7 @@ public class BookService {
     }
 
     public void showAllBook(TableColumn<Book, Long> id,
+                            TableColumn<Book, String> isbn10,
                             TableColumn<Book, String> title,
                             TableColumn<Book, String> author,
                             TableColumn<Book, Integer> year,
@@ -30,6 +31,7 @@ public class BookService {
                             TableView<Book> tvBooks) {
         ObservableList<Book> list = FXCollections.observableArrayList(bookRepository.findAll());
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        isbn10.setCellValueFactory(new PropertyValueFactory<>("isbn10"));
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         author.setCellValueFactory(new PropertyValueFactory<>("author"));
         year.setCellValueFactory(new PropertyValueFactory<>("year"));
@@ -37,20 +39,30 @@ public class BookService {
         tvBooks.setItems(list);
     }
 
-    public void create(String id, String title, String author, String year, String pages) throws Exception {
-        checkFieldValid(id, title, author, year, pages);
-        long longId = Long.parseLong(id);
-        isExistId(longId);
-        int integerYear = Integer.parseInt(year);
-        int integerPages = Integer.parseInt(pages);
-        Book book = new Book(longId, title, author, integerYear, integerPages);
+    public void create(String id, String isbn10, String title, String author, String year, String pages) throws Exception {
+        Book book = checkFieldData(isbn10, title, author, year, pages);
+        boolean isIsbn10Exist = bookRepository.isIsbnExist(book.getIsbn10());
+        if (isIsbn10Exist) {
+            throw new ResourceAlreadyExistException("ISBN-10 is already exist!\nIf you want to update this record, please click the UPDATE button.");
+        }
         bookRepository.save(book);
     }
 
-    private void checkFieldValid(String id, String title, String author, String year, String pages) throws Exception {
+    public void update(String id, String isbn10, String title, String author, String year, String pages) throws Exception {
+        Book book = checkFieldData(isbn10, title, author, year, pages);
+        boolean isIdExist = bookRepository.isIsbnExist(book.getIsbn10());
+        if (!isIdExist) {
+            throw new ResourceAlreadyExistException("ISBN-10 is not exist yet!\nIf you want to create a new record, please click the CREATE button.");
+        }
+        bookRepository.save(book);
+    }
+
+
+    //Validation functions
+    private void checkEmptyFields(String isbn10, String title, String author, String year, String pages) throws Exception {
         String exceptionMessage = "";
-        if (id.isEmpty()) {
-            exceptionMessage += " id ";
+        if (isbn10.isEmpty()) {
+            exceptionMessage += " isbn10 ";
         }
         if (author.isEmpty()) {
             exceptionMessage += " author ";
@@ -70,10 +82,26 @@ public class BookService {
 
     }
 
-    private void isExistId(long id) {
-        boolean isNewId = bookRepository.isExistId(id);
-        if (isNewId) {
-            throw new ResourceAlreadyExistException("ID already exist!\nIf you want to update this record, please click the UPDATE button.");
+    public Book checkFieldData(String isbn10, String title, String author, String year, String pages) throws Exception {
+        checkEmptyFields(isbn10, title, author, year, pages);
+        long longIsbn10;
+        int integerYear;
+        int integerPages;
+        try {
+            longIsbn10 = Long.parseLong(isbn10);
+        } catch (NumberFormatException exception) {
+            throw new NumberFormatException("ISBN-10 field contains numbers only.");
         }
+        try {
+            integerYear = Integer.parseInt(year);
+        } catch (NumberFormatException exception) {
+            throw new NumberFormatException("Publish year field contains numbers only.");
+        }
+        try {
+            integerPages = Integer.parseInt(pages);
+        } catch (NumberFormatException exception) {
+            throw new NumberFormatException("Pages field contains numbers only.");
+        }
+        return new Book(longIsbn10, title, author, integerYear, integerPages);
     }
 }

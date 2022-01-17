@@ -44,6 +44,9 @@ public class FxController implements Initializable {
     private TextField tfAuthor;
 
     @FXML
+    private TextField tfIsbn;
+
+    @FXML
     private TextField tfId;
 
     @FXML
@@ -57,6 +60,9 @@ public class FxController implements Initializable {
 
     @FXML
     private TableView<Book> tvBooks;
+
+    @FXML
+    private TableColumn<Book, String> tvIsbn;
 
     @FXML
     private TableColumn<Book, String> tvAuthor;
@@ -74,10 +80,10 @@ public class FxController implements Initializable {
     private TableColumn<Book, Integer> tvYear;
 
     @FXML
-    private Label lbTitle;
+    private Label lbErrorId;
 
     @FXML
-    private Label lbErrorId;
+    private Label lbErrorIsbn;
 
     @FXML
     private Label lbErrorTitle;
@@ -102,8 +108,21 @@ public class FxController implements Initializable {
         removeAllErrorLabel();
         if (event.getSource() == btnCreate) {
             try {
-                bookService.create(tfId.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
-                bookService.showAllBook(tvId, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+                bookService.create(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
+                bookService.showAllBook(tvId, tvIsbn, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+            } catch (DataFormatException exception) {
+                setFieldErrorLabels(exception);
+            } catch (ResourceAlreadyExistException exception) {
+                alertBox(exception.getMessage());
+            } catch (Exception exception) {
+                lbErrorMessage.setText(exception.getMessage());
+            }
+        }
+
+        if (event.getSource() == btnUpdate) {
+            try {
+                bookService.update(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
+                bookService.showAllBook(tvId, tvIsbn, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
             } catch (ResourceAlreadyExistException exception) {
@@ -116,12 +135,15 @@ public class FxController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bookService.showAllBook(tvId, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
+        bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
     }
 
     private void setFieldErrorLabels(Exception exception) {
         if (exception.getMessage().contains("id")) {
             lbErrorId.setText("Missing id");
+        }
+        if (exception.getMessage().contains("isbn10")) {
+            lbErrorIsbn.setText("Missing isbn-10");
         }
         if (exception.getMessage().contains("title")) {
             lbErrorTitle.setText("Missing title");
@@ -139,6 +161,7 @@ public class FxController implements Initializable {
 
     private void removeAllErrorLabel() {
         lbErrorId.setText("");
+        lbErrorIsbn.setText("");
         lbErrorAuthor.setText("");
         lbErrorTitle.setText("");
         lbErrorPages.setText("");
