@@ -145,23 +145,26 @@ public class FxController implements Initializable {
     }
 
     private void setFieldErrorLabels(Exception exception) {
-        if (exception.getMessage().contains("id")) {
-            lbErrorId.setText("Missing id");
-        }
-        if (exception.getMessage().contains("isbn10")) {
-            lbErrorIsbn.setText("Missing isbn-10");
-        }
-        if (exception.getMessage().contains("title")) {
-            lbErrorTitle.setText("Missing title");
-        }
-        if (exception.getMessage().contains("author")) {
-            lbErrorAuthor.setText("Missing author");
-        }
-        if (exception.getMessage().contains("year")) {
-            lbErrorYear.setText("Missing year");
-        }
-        if (exception.getMessage().contains("pages")) {
-            lbErrorPages.setText("Missing pages");
+        String[] errorMessages = exception.getMessage().split(";");
+        for (int i = 0; i < errorMessages.length; i++) {
+            if (errorMessages[i].contains("id")) {
+                lbErrorId.setText(errorMessages[i]);
+            }
+            if (errorMessages[i].toLowerCase().contains("isbn-10")) {
+                lbErrorIsbn.setText(errorMessages[i]);
+            }
+            if (errorMessages[i].toLowerCase().contains("title")) {
+                lbErrorTitle.setText(errorMessages[i]);
+            }
+            if (errorMessages[i].toLowerCase().contains("author")) {
+                lbErrorAuthor.setText(errorMessages[i]);
+            }
+            if (errorMessages[i].toLowerCase().contains("year")) {
+                lbErrorYear.setText(errorMessages[i]);
+            }
+            if (errorMessages[i].toLowerCase().contains("pages")) {
+                lbErrorPages.setText(errorMessages[i]);
+            }
         }
     }
 

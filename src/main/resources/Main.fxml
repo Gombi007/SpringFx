@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fx.springfx.controllers.FxController">
+<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1124.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fx.springfx.controllers.FxController">
     <children>
-        <VBox fx:id="textLabels" layoutX="168.0" layoutY="36.0" prefHeight="240.0" prefWidth="86.0" spacing="15.0">
+        <VBox fx:id="textLabels" layoutX="225.0" layoutY="36.0" prefHeight="240.0" prefWidth="74.0" spacing="15.0">
             <children>
                 <Label text="ID">
                     <font>
@@ -40,17 +45,17 @@
                 </Label>
             </children>
         </VBox>
-        <TableView fx:id="tvBooks" layoutX="29.0" layoutY="378.0" prefHeight="419.0" prefWidth="967.0">
+        <TableView fx:id="tvBooks" layoutX="29.0" layoutY="378.0" prefHeight="414.0" prefWidth="1062.0">
             <columns>
                 <TableColumn fx:id="tvId" minWidth="20.0" prefWidth="93.0" text="ID" />
                 <TableColumn fx:id="tvIsbn" prefWidth="224.0" text="ISBN-10" />
                 <TableColumn fx:id="tvTitle" prefWidth="285.0" text="Title" />
-                <TableColumn fx:id="tvAuthor" prefWidth="215.0" text="Author" />
-                <TableColumn fx:id="tvYear" minWidth="0.0" prefWidth="79.0" text="Year" />
-                <TableColumn fx:id="tvPages" minWidth="0.0" prefWidth="71.0" text="Pages" />
+                <TableColumn fx:id="tvAuthor" prefWidth="262.0" text="Author" />
+                <TableColumn fx:id="tvYear" minWidth="0.0" prefWidth="89.0" text="Year" />
+                <TableColumn fx:id="tvPages" minWidth="0.0" prefWidth="109.0" text="Pages" />
             </columns>
         </TableView>
-        <VBox layoutX="251.0" layoutY="36.0" prefHeight="227.0" prefWidth="534.0" spacing="12.0">
+        <VBox layoutX="298.0" layoutY="36.0" prefHeight="240.0" prefWidth="520.0" spacing="12.0">
             <children>
                 <TextField fx:id="tfId" disable="true" prefHeight="28.0" prefWidth="534.0">
                     <font>
@@ -84,27 +89,27 @@
                 </TextField>
             </children>
         </VBox>
-        <Button fx:id="btnUpdate" layoutX="475.0" layoutY="283.0" mnemonicParsing="false" onAction="#buttonAction" text="Update">
+        <Button fx:id="btnUpdate" layoutX="519.0" layoutY="283.0" mnemonicParsing="false" onAction="#buttonAction" text="Update">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="btnDelete" layoutX="705.0" layoutY="283.0" mnemonicParsing="false" onAction="#buttonAction" text="Delete">
+        <Button fx:id="btnDelete" layoutX="738.0" layoutY="283.0" mnemonicParsing="false" onAction="#buttonAction" text="Delete">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="btnCreate" layoutX="254.0" layoutY="283.0" mnemonicParsing="false" onAction="#buttonAction" text="Create">
+        <Button fx:id="btnCreate" layoutX="298.0" layoutY="283.0" mnemonicParsing="false" onAction="#buttonAction" text="Create">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <Label fx:id="lbTitle" layoutX="462.0" text="Bookstore">
+        <Label fx:id="lbTitle" layoutX="457.0" layoutY="-4.0" text="Bookstore">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
-        <VBox fx:id="errLabels" layoutX="799.0" layoutY="36.0" prefHeight="247.0" prefWidth="221.0" spacing="21.0">
+        <VBox fx:id="errLabels" layoutX="823.0" layoutY="36.0" prefHeight="247.0" prefWidth="298.0" spacing="21.0">
             <children>
                 <Label fx:id="lbErrorId">
                     <font>

@@ -54,12 +54,6 @@ public class BookService {
         if (!isIsbnExist) {
             throw new ResourceAlreadyExistException("ISBN-10 is not exist yet!\nIf you want to create a new record, please click the CREATE button.");
         }
-        try {
-            Long longId = Long.parseLong(id);
-            book.setId(longId);
-        } catch (NumberFormatException exception) {
-            throw new NumberFormatException("Id contains numbers only");
-        }
         if (userHasAcceptedTheChanges)
             bookRepository.save(book);
     }
@@ -69,19 +63,19 @@ public class BookService {
     private void checkEmptyFields(String isbn10, String title, String author, String year, String pages) throws Exception {
         String exceptionMessage = "";
         if (isbn10.isEmpty()) {
-            exceptionMessage += " isbn10 ";
+            exceptionMessage += " Missing ISBN-10 ;";
         }
         if (author.isEmpty()) {
-            exceptionMessage += " author ";
+            exceptionMessage += " Missing Author ;";
         }
         if (title.isEmpty()) {
-            exceptionMessage += " title ";
+            exceptionMessage += " Missing Title ;";
         }
         if (year.isEmpty()) {
-            exceptionMessage += " year ";
+            exceptionMessage += " Missing Year ;";
         }
         if (pages.isEmpty()) {
-            exceptionMessage += " pages ";
+            exceptionMessage += " Missing Pages ;";
         }
         if (!exceptionMessage.isEmpty()) {
             throw new DataFormatException(exceptionMessage);
@@ -91,23 +85,28 @@ public class BookService {
 
     public Book checkFieldData(String isbn10, String title, String author, String year, String pages) throws Exception {
         checkEmptyFields(isbn10, title, author, year, pages);
-        long longIsbn10;
-        int integerYear;
-        int integerPages;
+        Long longIsbn10 = null;
+        Integer integerYear = null;
+        Integer integerPages = null;
+        String exceptionMessage = "";
+
         try {
             longIsbn10 = Long.parseLong(isbn10);
         } catch (NumberFormatException exception) {
-            throw new NumberFormatException("ISBN-10 field contains numbers only.");
+            exceptionMessage += "ISBN-10 field contains numbers only.;";
         }
         try {
             integerYear = Integer.parseInt(year);
         } catch (NumberFormatException exception) {
-            throw new NumberFormatException("Publish year field contains numbers only.");
+            exceptionMessage += "Publish year field contains numbers only.;";
         }
         try {
             integerPages = Integer.parseInt(pages);
         } catch (NumberFormatException exception) {
-            throw new NumberFormatException("Pages field contains numbers only.");
+            exceptionMessage += "Pages field contains numbers only.;";
+        }
+        if (!exceptionMessage.isEmpty()) {
+            throw new DataFormatException(exceptionMessage);
         }
         return new Book(longIsbn10, title, author, integerYear, integerPages);
     }
