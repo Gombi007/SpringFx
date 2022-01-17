@@ -111,12 +111,13 @@ public class FxController implements Initializable {
         removeAllErrorLabel();
         if (event.getSource() == btnCreate) {
             try {
-                bookService.create(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
-                bookService.showAllBook(tvId, tvIsbn, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+                boolean userHasAcceptedTheChanges = informAlertBox("Do you want to add this book to database?");
+                bookService.create(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText(), userHasAcceptedTheChanges);
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
             } catch (ResourceAlreadyExistException exception) {
-                alertBox(exception.getMessage());
+                errorAlertBox(exception.getMessage());
             } catch (Exception exception) {
                 lbErrorMessage.setText(exception.getMessage());
             }
@@ -124,13 +125,13 @@ public class FxController implements Initializable {
 
         if (event.getSource() == btnUpdate) {
             try {
-                boolean userHasAcceptedTheChanges = alertBox("Do you accept this changes?");
+                boolean userHasAcceptedTheChanges = informAlertBox("Do you accept these changes?");
                 bookService.update(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText(), userHasAcceptedTheChanges);
-                bookService.showAllBook(tvId, tvIsbn, tvAuthor, tvTitle, tvYear, tvPages, tvBooks);
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
             } catch (ResourceAlreadyExistException exception) {
-                alertBox(exception.getMessage());
+                errorAlertBox(exception.getMessage());
             } catch (Exception exception) {
                 lbErrorMessage.setText(exception.getMessage());
             }
@@ -178,11 +179,11 @@ public class FxController implements Initializable {
         lbErrorMessage.setText("");
     }
 
-    private boolean alertBox(String text) {
+    private boolean informAlertBox(String text) {
         ButtonType cancel = new ButtonType("Cancel");
         ButtonType ok = new ButtonType("OK");
 
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.getButtonTypes().setAll(cancel, ok);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
@@ -195,6 +196,18 @@ public class FxController implements Initializable {
             return false;
         }
     }
+
+    private void errorAlertBox(String text) {
+        ButtonType ok = new ButtonType("OK");
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.getButtonTypes().setAll(ok);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.show();
+    }
+
 
     public void handleSelectedTableRow() {
         tvBooks.setOnMouseClicked(new EventHandler<MouseEvent>() {

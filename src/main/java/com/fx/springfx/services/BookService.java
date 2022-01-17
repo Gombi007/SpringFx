@@ -39,17 +39,19 @@ public class BookService {
         tvBooks.setItems(list);
     }
 
-    public void create(String id, String isbn10, String title, String author, String year, String pages) throws Exception {
-        Book book = checkFieldData(isbn10, title, author, year, pages);
+    public void create(String id, String isbn10, String title, String author, String year, String pages, boolean userHasAcceptedTheChanges) throws Exception {
+        Book book = checkFieldData(id, isbn10, title, author, year, pages);
         boolean isIsbn10Exist = bookRepository.isIsbnExist(book.getIsbn10());
         if (isIsbn10Exist) {
             throw new ResourceAlreadyExistException("ISBN-10 is already exist!\nIf you want to update this record, please click the UPDATE button.");
         }
-        bookRepository.save(book);
+        if (userHasAcceptedTheChanges) {
+            bookRepository.save(book);
+        }
     }
 
     public void update(String id, String isbn10, String title, String author, String year, String pages, boolean userHasAcceptedTheChanges) throws Exception {
-        Book book = checkFieldData(isbn10, title, author, year, pages);
+        Book book = checkFieldData(id, isbn10, title, author, year, pages);
         boolean isIsbnExist = bookRepository.isIsbnExist(book.getIsbn10());
         if (!isIsbnExist) {
             throw new ResourceAlreadyExistException("ISBN-10 is not exist yet!\nIf you want to create a new record, please click the CREATE button.");
@@ -83,13 +85,19 @@ public class BookService {
 
     }
 
-    public Book checkFieldData(String isbn10, String title, String author, String year, String pages) throws Exception {
+    public Book checkFieldData(String id, String isbn10, String title, String author, String year, String pages) throws Exception {
         checkEmptyFields(isbn10, title, author, year, pages);
+        Long longId = null;
         Long longIsbn10 = null;
         Integer integerYear = null;
         Integer integerPages = null;
         String exceptionMessage = "";
 
+        try {
+            longId = Long.parseLong(id);
+        } catch (NumberFormatException exception) {
+            exceptionMessage += "ID field contains numbers only.;";
+        }
         try {
             longIsbn10 = Long.parseLong(isbn10);
         } catch (NumberFormatException exception) {
@@ -107,6 +115,9 @@ public class BookService {
         }
         if (!exceptionMessage.isEmpty()) {
             throw new DataFormatException(exceptionMessage);
+        }
+        if (longId > 0) {
+            return new Book(longId, longIsbn10, title, author, integerYear, integerPages);
         }
         return new Book(longIsbn10, title, author, integerYear, integerPages);
     }
