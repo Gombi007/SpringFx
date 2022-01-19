@@ -26,6 +26,15 @@
     -fx-padding: 10 20 10 20;
 }
 
+#btnSearch {
+    -fx-text-fill: white;
+    -fx-background-color: #978520,
+    linear-gradient(#ecd135 0%, #ecd135 20%, #ecd135 100%),
+    linear-gradient(#c4ad2c, #bea82b),
+    radial-gradient(center 50% 0%, radius 100%, rgba(199, 199, 199, 0.9), rgba(255, 255, 255, 0));
+    -fx-padding: 10 20 10 20;
+}
+
 #main {
     -fx-background-color: #5c83d1;
 }

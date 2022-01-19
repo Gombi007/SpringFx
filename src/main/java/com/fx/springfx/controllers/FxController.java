@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.zip.DataFormatException;
@@ -40,6 +41,9 @@ public class FxController implements Initializable {
 
     @FXML
     private Button btnUpdate;
+
+    @FXML
+    private Button btnSearch;
 
     @FXML
     private AnchorPane main;
@@ -114,7 +118,7 @@ public class FxController implements Initializable {
             try {
                 boolean userHasAcceptedTheChanges = informAlertBox("Do you want to add this book to database?");
                 bookService.create(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText(), userHasAcceptedTheChanges);
-                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, null);
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
             } catch (ResourceAlreadyExistException exception) {
@@ -128,7 +132,7 @@ public class FxController implements Initializable {
             try {
                 boolean userHasAcceptedTheChanges = informAlertBox("Do you accept these changes?");
                 bookService.update(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText(), userHasAcceptedTheChanges);
-                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, null);
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
             } catch (ResourceAlreadyExistException exception) {
@@ -141,7 +145,19 @@ public class FxController implements Initializable {
             try {
                 boolean userHasAcceptedTheChanges = informAlertBox("Do you accept these changes?");
                 bookService.delete(tfId.getText(), tfIsbn.getText(), userHasAcceptedTheChanges);
-                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, null);
+            } catch (DataFormatException exception) {
+                setFieldErrorLabels(exception);
+            } catch (ResourceIsNotExistsException exception) {
+                errorAlertBox(exception.getMessage());
+            } catch (Exception exception) {
+                lbErrorMessage.setText(exception.getMessage());
+            }
+        }
+        if (event.getSource() == btnSearch) {
+            try {
+                ArrayList<Book> foundBooks = bookService.showFoundBooks(tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, foundBooks);
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
             } catch (ResourceIsNotExistsException exception) {
@@ -155,7 +171,7 @@ public class FxController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
+        bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, null);
         handleSelectedTableRow();
     }
 

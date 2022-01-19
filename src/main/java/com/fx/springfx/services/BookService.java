@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.zip.DataFormatException;
 
 @Service
@@ -29,8 +30,14 @@ public class BookService {
                             TableColumn<Book, String> author,
                             TableColumn<Book, Integer> year,
                             TableColumn<Book, Integer> pages,
-                            TableView<Book> tvBooks) {
-        ObservableList<Book> list = FXCollections.observableArrayList(bookRepository.findAll());
+                            TableView<Book> tvBooks,
+                            ArrayList<Book> gotBookList) {
+        ObservableList<Book> list;
+        if (gotBookList == null) {
+            list = FXCollections.observableArrayList(bookRepository.findAll());
+        } else {
+            list = FXCollections.observableArrayList(gotBookList);
+        }
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         isbn10.setCellValueFactory(new PropertyValueFactory<>("isbn10"));
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -82,6 +89,23 @@ public class BookService {
             throw new DataFormatException("Id must be a number");
         }
         throw new ResourceIsNotExistsException("There is NO book with this id or IBAN-10");
+    }
+
+    public ArrayList<Book> showFoundBooks(String isbn10, String title, String author, String year, String pages) throws DataFormatException {
+        Long gotIban;
+        ArrayList<Book> searchResult = new ArrayList<>();
+        try {
+            gotIban = Long.parseLong(isbn10);
+
+        } catch (NumberFormatException exception) {
+            throw new DataFormatException("Id must be a number");
+        }
+
+        Book book = bookRepository.findByIsbn10(gotIban)
+                .orElseThrow(() -> new ResourceIsNotExistsException("There is NO book with this IBAN-10"));
+        searchResult.add(book);
+        return searchResult;
+
     }
 
     public void delete(String id, String iban10, boolean userHasAcceptedTheChanges) throws DataFormatException {
