@@ -100,6 +100,19 @@ public class BookService {
                 throw new ResourceIsNotExistsException("There is NO book with this Title");
             }
         }
+
+        if (!author.isEmpty()) {
+            ArrayList<Optional<Book>> booksByTitle = bookRepository.findByAuthor(author.toLowerCase());
+            if (!booksByTitle.isEmpty()) {
+                for (Optional<Book> book : booksByTitle) {
+                    if (isNotThisBookInTheListYet(searchResult, book.get())) {
+                        searchResult.add(book.get());
+                    }
+                }
+            } else {
+                throw new ResourceIsNotExistsException("There is NO book with this Author");
+            }
+        }
         return searchResult;
     }
 

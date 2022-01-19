@@ -21,4 +21,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Query(value = "SELECT * FROM books WHERE LOWER(title) LIKE %:title%", nativeQuery = true)
     ArrayList<Optional<Book>> findByTitle(String title);
 
+    @Query(value = "SELECT * FROM books WHERE LOWER(author) LIKE %:author%", nativeQuery = true)
+    ArrayList<Optional<Book>> findByAuthor(String author);
+
 }

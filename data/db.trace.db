@@ -266,3 +266,6 @@ INSERT INTO books(isbn10,title, author, year, pages) VALUES ('9634477453','Babel
 2022-01-19 13:34:52 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM BOOKS WHERE TITLE = %[*]':title'%"; expected "ALL, ANY, SOME"; SQL statement:
 SELECT * FROM books WHERE title = %':title'% [42001-200]
+2022-01-19 17:00:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE VARCHAR(100)": "STRINGDECODE('Ranma \u00c2\u00bd: Big Trouble in Nekonron, China (Ranma \u00c2\u00bd: Ch\u00c3\u00bbgoku Nekonron daikessen! Oki... (109)"; SQL statement:
+insert into books (isbn10, title, author, year, pages) values (2393674004, 'Ranma Â½: Big Trouble in Nekonron, China (Ranma Â½: ChÃ»goku Nekonron daikessen! Okite yaburi no gekitÃ´ hen)', 'Tamqrah Halden', 2010, 661) [22001-200]

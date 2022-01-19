@@ -260,8 +260,10 @@ public class FxController implements Initializable {
                 tfIsbn.setText(selectedBook.getIsbn10().toString());
                 tfTitle.setText(selectedBook.getTitle());
                 tfAuthor.setText(selectedBook.getAuthor());
-                tfYear.setText(year.toString());
-                tfPages.setText(pages.toString());
+                if (year != null || pages != null) {
+                    tfYear.setText(year.toString());
+                    tfPages.setText(pages.toString());
+                }
             }
         });
     }
