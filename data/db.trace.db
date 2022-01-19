@@ -263,3 +263,6 @@ INSERT INTO books(isbn10,title, author, year, pages) VALUES ('9634477453','Babel
 	at com.sun.javafx.application.LauncherImpl.launchApplication1(LauncherImpl.java:825)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication$2(LauncherImpl.java:196)
 	at java.base/java.lang.Thread.run(Thread.java:829)
+2022-01-19 13:34:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM BOOKS WHERE TITLE = %[*]':title'%"; expected "ALL, ANY, SOME"; SQL statement:
+SELECT * FROM books WHERE title = %':title'% [42001-200]

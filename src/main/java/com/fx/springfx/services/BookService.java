@@ -13,16 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.zip.DataFormatException;
 
 @Service
 public class BookService {
     private BookRepository bookRepository;
 
+
     @Autowired
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
+
 
     public void showAllBook(TableColumn<Book, Long> id,
                             TableColumn<Book, String> isbn10,
@@ -48,7 +51,7 @@ public class BookService {
     }
 
     public void create(String id, String isbn10, String title, String author, String year, String pages, boolean userHasAcceptedTheChanges) throws Exception {
-        Book book = checkFieldData(id, isbn10, title, author, year, pages);
+        Book book = DataValidation.checkFieldData(id, isbn10, title, author, year, pages);
         boolean isIsbn10Exist = bookRepository.isIsbnExist(book.getIsbn10());
         if (isIsbn10Exist) {
             throw new ResourceAlreadyExistException("ISBN-10 is already exist!\nIf you want to update this record, please click the UPDATE button.");
@@ -59,7 +62,7 @@ public class BookService {
     }
 
     public void update(String id, String isbn10, String title, String author, String year, String pages, boolean userHasAcceptedTheChanges) throws Exception {
-        Book book = checkFieldData(id, isbn10, title, author, year, pages);
+        Book book = DataValidation.checkFieldData(id, isbn10, title, author, year, pages);
         boolean isIsbnExist = bookRepository.isIsbnExist(book.getIsbn10());
         if (!isIsbnExist) {
             throw new ResourceAlreadyExistException("ISBN-10 is not exist yet!\nIf you want to create a new record, please click the CREATE button.");
@@ -68,7 +71,58 @@ public class BookService {
             bookRepository.save(book);
     }
 
-    public Book finByIdOrIban10(String id, String iban10) throws DataFormatException {
+
+    public ArrayList<Book> showFoundBooks(String isbn10, String title, String author, String year, String pages) throws DataFormatException {
+        ArrayList<Book> searchResult = new ArrayList<>();
+
+        if (!isbn10.isEmpty()) {
+            try {
+                Long gotIsbn10;
+                gotIsbn10 = Long.parseLong(isbn10);
+                Book bookByIsbn10 = bookRepository.findByIsbn10(gotIsbn10)
+                        .orElseThrow(() -> new ResourceIsNotExistsException("There is NO book with this ISBN-10"));
+                if (isNotThisBookInTheListYet(searchResult, bookByIsbn10)) {
+                    searchResult.add(bookByIsbn10);
+                }
+            } catch (NumberFormatException exception) {
+                throw new DataFormatException("ISBN-10 must be a number");
+            }
+        }
+        if (!title.isEmpty()) {
+            ArrayList<Optional<Book>> booksByTitle = bookRepository.findByTitle(title.toLowerCase());
+            if (!booksByTitle.isEmpty()) {
+                for (Optional<Book> book : booksByTitle) {
+                    if (isNotThisBookInTheListYet(searchResult, book.get())) {
+                        searchResult.add(book.get());
+                    }
+                }
+            } else {
+                throw new ResourceIsNotExistsException("There is NO book with this Title");
+            }
+        }
+        return searchResult;
+    }
+
+
+    public void delete(String id, String iban10, boolean userHasAcceptedTheChanges) throws DataFormatException {
+        if (userHasAcceptedTheChanges) {
+            Book book = finByIdOrIban10(id, iban10);
+            bookRepository.delete(book);
+        }
+    }
+
+
+    private boolean isNotThisBookInTheListYet(ArrayList<Book> list, Book checkingBook) {
+        if (!list.isEmpty() && checkingBook != null)
+            for (Book book : list) {
+                if (book.getId() == checkingBook.getId()) {
+                    return false;
+                }
+            }
+        return true;
+    }
+
+    private Book finByIdOrIban10(String id, String iban10) throws DataFormatException {
         try {
             if (!id.isEmpty()) {
                 Long isExistId = Long.parseLong(id);
@@ -89,93 +143,5 @@ public class BookService {
             throw new DataFormatException("Id must be a number");
         }
         throw new ResourceIsNotExistsException("There is NO book with this id or IBAN-10");
-    }
-
-    public ArrayList<Book> showFoundBooks(String isbn10, String title, String author, String year, String pages) throws DataFormatException {
-        Long gotIban;
-        ArrayList<Book> searchResult = new ArrayList<>();
-        try {
-            gotIban = Long.parseLong(isbn10);
-
-        } catch (NumberFormatException exception) {
-            throw new DataFormatException("Id must be a number");
-        }
-
-        Book book = bookRepository.findByIsbn10(gotIban)
-                .orElseThrow(() -> new ResourceIsNotExistsException("There is NO book with this IBAN-10"));
-        searchResult.add(book);
-        return searchResult;
-
-    }
-
-    public void delete(String id, String iban10, boolean userHasAcceptedTheChanges) throws DataFormatException {
-        if (userHasAcceptedTheChanges) {
-            Book book = finByIdOrIban10(id, iban10);
-            bookRepository.delete(book);
-        }
-    }
-
-
-    //Validation functions
-    private void checkEmptyFields(String isbn10, String title, String author, String year, String pages) throws Exception {
-        String exceptionMessage = "";
-        if (isbn10.isEmpty()) {
-            exceptionMessage += " Missing ISBN-10 ;";
-        }
-        if (author.isEmpty()) {
-            exceptionMessage += " Missing Author ;";
-        }
-        if (title.isEmpty()) {
-            exceptionMessage += " Missing Title ;";
-        }
-        if (year.isEmpty()) {
-            exceptionMessage += " Missing Year ;";
-        }
-        if (pages.isEmpty()) {
-            exceptionMessage += " Missing Pages ;";
-        }
-        if (!exceptionMessage.isEmpty()) {
-            throw new DataFormatException(exceptionMessage);
-        }
-
-    }
-
-    public Book checkFieldData(String id, String isbn10, String title, String author, String year, String pages) throws Exception {
-
-        checkEmptyFields(isbn10, title, author, year, pages);
-        Long longId = 0L;
-        Long longIsbn10 = null;
-        Integer integerYear = null;
-        Integer integerPages = null;
-        String exceptionMessage = "";
-        if (!id.isEmpty()) {
-            try {
-                longId = Long.parseLong(id);
-            } catch (NumberFormatException exception) {
-                exceptionMessage += "ID field contains numbers only.;";
-            }
-        }
-        try {
-            longIsbn10 = Long.parseLong(isbn10);
-        } catch (NumberFormatException exception) {
-            exceptionMessage += "ISBN-10 field contains numbers only.;";
-        }
-        try {
-            integerYear = Integer.parseInt(year);
-        } catch (NumberFormatException exception) {
-            exceptionMessage += "Publish year field contains numbers only.;";
-        }
-        try {
-            integerPages = Integer.parseInt(pages);
-        } catch (NumberFormatException exception) {
-            exceptionMessage += "Pages field contains numbers only.;";
-        }
-        if (!exceptionMessage.isEmpty()) {
-            throw new DataFormatException(exceptionMessage);
-        }
-        if (longId > 0) {
-            return new Book(longId, longIsbn10, title, author, integerYear, integerPages);
-        }
-        return new Book(longIsbn10, title, author, integerYear, integerPages);
     }
 }

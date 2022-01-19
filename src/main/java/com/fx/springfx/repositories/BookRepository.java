@@ -18,4 +18,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Query(value = "SELECT * FROM books WHERE isbn10 = :isbn", nativeQuery = true)
     Optional<Book> findByIsbn10(Long isbn);
 
+    @Query(value = "SELECT * FROM books WHERE LOWER(title) LIKE %:title%", nativeQuery = true)
+    ArrayList<Optional<Book>> findByTitle(String title);
+
 }

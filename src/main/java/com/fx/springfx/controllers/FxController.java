@@ -113,8 +113,8 @@ public class FxController implements Initializable {
 
     @FXML
     private void buttonAction(ActionEvent event) {
-        removeAllErrorLabel();
         if (event.getSource() == btnCreate) {
+            removeAllErrorLabel();
             try {
                 boolean userHasAcceptedTheChanges = informAlertBox("Do you want to add this book to database?");
                 bookService.create(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText(), userHasAcceptedTheChanges);
@@ -129,6 +129,7 @@ public class FxController implements Initializable {
         }
 
         if (event.getSource() == btnUpdate) {
+            removeAllErrorLabel();
             try {
                 boolean userHasAcceptedTheChanges = informAlertBox("Do you accept these changes?");
                 bookService.update(tfId.getText(), tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText(), userHasAcceptedTheChanges);
@@ -142,6 +143,7 @@ public class FxController implements Initializable {
             }
         }
         if (event.getSource() == btnDelete) {
+            removeAllErrorLabel();
             try {
                 boolean userHasAcceptedTheChanges = informAlertBox("Do you accept these changes?");
                 bookService.delete(tfId.getText(), tfIsbn.getText(), userHasAcceptedTheChanges);
@@ -155,15 +157,23 @@ public class FxController implements Initializable {
             }
         }
         if (event.getSource() == btnSearch) {
+            removeAllErrorLabel();
             try {
                 ArrayList<Book> foundBooks = bookService.showFoundBooks(tfIsbn.getText(), tfTitle.getText(), tfAuthor.getText(), tfYear.getText(), tfPages.getText());
-                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, foundBooks);
+                if (!foundBooks.isEmpty()) {
+                    bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, foundBooks);
+                } else {
+                    bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, null);
+                }
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, null);
             } catch (ResourceIsNotExistsException exception) {
                 errorAlertBox(exception.getMessage());
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, null);
             } catch (Exception exception) {
                 lbErrorMessage.setText(exception.getMessage());
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks, null);
             }
         }
 
