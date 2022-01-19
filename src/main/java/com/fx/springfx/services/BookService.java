@@ -2,6 +2,7 @@ package com.fx.springfx.services;
 
 import com.fx.springfx.entities.Book;
 import com.fx.springfx.exceptions.ResourceAlreadyExistException;
+import com.fx.springfx.exceptions.ResourceIsNotExistsException;
 import com.fx.springfx.repositories.BookRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,6 +61,36 @@ public class BookService {
             bookRepository.save(book);
     }
 
+    public Book finByIdOrIban10(String id, String iban10) throws DataFormatException {
+        try {
+            if (!id.isEmpty()) {
+                Long isExistId = Long.parseLong(id);
+                boolean isPresentId = bookRepository.findById(isExistId).isPresent();
+                if (isPresentId) {
+                    Book book = bookRepository.findById(isExistId).get();
+                    return book;
+                }
+            } else if (!iban10.isEmpty()) {
+                Long isExistIban = Long.parseLong(iban10);
+                boolean isPresentIban10 = bookRepository.findByIsbn10(isExistIban).isPresent();
+                if (isPresentIban10) {
+                    Book book = bookRepository.findByIsbn10(isExistIban).get();
+                    return book;
+                }
+            }
+        } catch (NumberFormatException exception) {
+            throw new DataFormatException("Id must be a number");
+        }
+        throw new ResourceIsNotExistsException("There is NO book with this id or IBAN-10");
+    }
+
+    public void delete(String id, String iban10, boolean userHasAcceptedTheChanges) throws DataFormatException {
+        if (userHasAcceptedTheChanges) {
+            Book book = finByIdOrIban10(id, iban10);
+            bookRepository.delete(book);
+        }
+    }
+
 
     //Validation functions
     private void checkEmptyFields(String isbn10, String title, String author, String year, String pages) throws Exception {
@@ -86,17 +117,19 @@ public class BookService {
     }
 
     public Book checkFieldData(String id, String isbn10, String title, String author, String year, String pages) throws Exception {
+
         checkEmptyFields(isbn10, title, author, year, pages);
-        Long longId = null;
+        Long longId = 0L;
         Long longIsbn10 = null;
         Integer integerYear = null;
         Integer integerPages = null;
         String exceptionMessage = "";
-
-        try {
-            longId = Long.parseLong(id);
-        } catch (NumberFormatException exception) {
-            exceptionMessage += "ID field contains numbers only.;";
+        if (!id.isEmpty()) {
+            try {
+                longId = Long.parseLong(id);
+            } catch (NumberFormatException exception) {
+                exceptionMessage += "ID field contains numbers only.;";
+            }
         }
         try {
             longIsbn10 = Long.parseLong(isbn10);

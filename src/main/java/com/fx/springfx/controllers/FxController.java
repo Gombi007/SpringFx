@@ -2,6 +2,7 @@ package com.fx.springfx.controllers;
 
 import com.fx.springfx.entities.Book;
 import com.fx.springfx.exceptions.ResourceAlreadyExistException;
+import com.fx.springfx.exceptions.ResourceIsNotExistsException;
 import com.fx.springfx.services.BookService;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -131,6 +132,19 @@ public class FxController implements Initializable {
             } catch (DataFormatException exception) {
                 setFieldErrorLabels(exception);
             } catch (ResourceAlreadyExistException exception) {
+                errorAlertBox(exception.getMessage());
+            } catch (Exception exception) {
+                lbErrorMessage.setText(exception.getMessage());
+            }
+        }
+        if (event.getSource() == btnDelete) {
+            try {
+                boolean userHasAcceptedTheChanges = informAlertBox("Do you accept these changes?");
+                bookService.delete(tfId.getText(), tfIsbn.getText(), userHasAcceptedTheChanges);
+                bookService.showAllBook(tvId, tvIsbn, tvTitle, tvAuthor, tvYear, tvPages, tvBooks);
+            } catch (DataFormatException exception) {
+                setFieldErrorLabels(exception);
+            } catch (ResourceIsNotExistsException exception) {
                 errorAlertBox(exception.getMessage());
             } catch (Exception exception) {
                 lbErrorMessage.setText(exception.getMessage());
