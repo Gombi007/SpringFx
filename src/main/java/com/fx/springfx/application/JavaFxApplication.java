@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -33,6 +34,9 @@ public class JavaFxApplication extends Application {
         Scene scene = new Scene(root);
         String css = this.getClass().getResource("/style.css").toExternalForm();
         scene.getStylesheets().add(css);
+        stage.setTitle("Bookstore");
+        Image icon = new Image("/icon.png");
+        stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.show();
     }
