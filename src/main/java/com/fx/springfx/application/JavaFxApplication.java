@@ -37,6 +37,7 @@ public class JavaFxApplication extends Application {
         stage.setTitle("Bookstore");
         Image icon = new Image("/icon.png");
         stage.getIcons().add(icon);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
